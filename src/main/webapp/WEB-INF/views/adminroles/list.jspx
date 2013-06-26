@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:list id="pl_cn_fnic_dhc_domain_AdminRole" items="${adminroles}" z="E2ohFv4plwY7UVDJFFfwCcsrIxc=">
+        <table:table data="${adminroles}" id="l_cn_fnic_dhc_domain_AdminRole" path="/adminroles" z="j8LtzFyk5P7x93L8F+W8lCAzWNQ=">
+            <table:column id="c_cn_fnic_dhc_domain_AdminRole_roleName" property="roleName" z="sXNGOwE6P0+kZ+Ea4GhKap3MeFw="/>
+            <table:column id="c_cn_fnic_dhc_domain_AdminRole_description" property="description" z="7UXf7lnlHn+4B2oRdh1Zhxh6gbU="/>
+            <table:column id="c_cn_fnic_dhc_domain_AdminRole_auth" property="auth" z="5T63jzdljOJz9A7Zno0JdLsoW/s="/>
+            <table:column date="true" dateTimePattern="${adminRole_createtime_date_format}" id="c_cn_fnic_dhc_domain_AdminRole_createTime" property="createTime" z="Gdgs5h1C2CD/6jsAF3GVqxXQIpA="/>
+            <table:column id="c_cn_fnic_dhc_domain_AdminRole_createdBy" property="createdBy" z="AkqAaTvmpcPIbdF+/B6KSh2AjJw="/>
+        </table:table>
+    </page:list>
+</div>

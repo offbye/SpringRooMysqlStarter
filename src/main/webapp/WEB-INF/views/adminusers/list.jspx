@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:list id="pl_cn_fnic_dhc_domain_AdminUser" items="${adminusers}" z="BBUeyNJNnJJ0aGg6npgghX8s4wI=">
+        <table:table data="${adminusers}" id="l_cn_fnic_dhc_domain_AdminUser" path="/adminusers" z="ml066uRNEkqux81oQQwE75ZumX4=">
+            <table:column id="c_cn_fnic_dhc_domain_AdminUser_username" property="username" z="L84vihaiOjk9h8Dzu73b9AhGj9E="/>
+            <table:column id="c_cn_fnic_dhc_domain_AdminUser_email" property="email" z="oZaGBFxRPIlBGZoHDY/tco/Tbf4="/>
+            <table:column id="c_cn_fnic_dhc_domain_AdminUser_password" property="password" z="NVsGOV4M9VeWm8P6iFhfcywlbdc="/>
+            <table:column id="c_cn_fnic_dhc_domain_AdminUser_realName" property="realName" z="yGFQPZ7DHuCNbdmktBeUQkvcgFs="/>
+            <table:column id="c_cn_fnic_dhc_domain_AdminUser_officePhone" property="officePhone" z="5ujR18Zmy0dn4CQ/PQC3MBeoaUM="/>
+            <table:column id="c_cn_fnic_dhc_domain_AdminUser_mobilePhone" property="mobilePhone" z="OZjCOBrZvKjOMMR2SB9uHbucmpU="/>
+        </table:table>
+    </page:list>
+</div>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <form:update id="fu_cn_fnic_dhc_domain_AdminRole" modelAttribute="adminRole" path="/adminroles" versionField="Version" z="QSZSoU4TuWPxdsB8oL1fQt8x3uo=">
+        <field:input field="roleName" id="c_cn_fnic_dhc_domain_AdminRole_roleName" max="16" min="1" required="true" z="RT918Z3KTXhtAOHT/uDjsUmA3Rk="/>
+        <field:textarea field="description" id="c_cn_fnic_dhc_domain_AdminRole_description" z="BSLW9jhi4M5XWTD+WmJZUABadz4="/>
+        <field:input field="auth" id="c_cn_fnic_dhc_domain_AdminRole_auth" max="16" min="1" required="true" z="NX5GfYVxnP0Qjsao18GvNaNymHI="/>
+        <field:datetime dateTimePattern="${adminRole_createtime_date_format}" field="createTime" id="c_cn_fnic_dhc_domain_AdminRole_createTime" z="O5bWdQvdoaLrrXO+I2WbTA2QG10="/>
+        <field:select field="createdBy" id="c_cn_fnic_dhc_domain_AdminRole_createdBy" itemValue="id" items="${adminusers}" path="/adminusers" z="xljgDRRozte7v4qDpU3AOxaIXLQ="/>
+    </form:update>
+</div>

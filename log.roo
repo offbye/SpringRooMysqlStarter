@@ -1,0 +1,38 @@
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-06-25 16:20:24
+project --topLevelPackage cn.fnic.dhc --java 6 --projectName dhc
+persistence setup --provider HIBERNATE --database MYSQL
+database properties set --key database.username --value root
+database properties set --key database.password --value root
+database properties set --key database.url --value jdbc:mysql://localhost:3306/xkmtest
+entity jpa --class ~.domain.AdminRole --testAutomatically --activeRecord false
+entity jpa --class ~.domain.AdminUser --testAutomatically --activeRecord false
+field string --fieldName roleName --class ~.domain.AdminRole --notNull --sizeMin 1 --sizeMax 16
+field string --fieldName description --class ~.domain.AdminRole --sizeMax 256
+field string --fieldName auth --class ~.domain.AdminRole --notNull --sizeMin 1 --sizeMax 16
+field date --fieldName createTime --type java.util.Date
+field reference --fieldName createdBy --type ~.domain.AdminUser
+field string --fieldName username --class ~.domain.AdminUser --notNull 
+field string --fieldName email --regexp "[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]+"
+field string --fieldName password --notNull --sizeMin 6 --sizeMax 32 
+field string --fieldName realName --sizeMax 32
+field string --fieldName officePhone --sizeMax 16
+field string --fieldName mobilePhone --sizeMax 16
+field date --fieldName createTime --type java.util.Date
+field date --fieldName lastLoginTime --type java.util.Date
+field string --fieldName lastLoginIp --sizeMax 16
+field set --fieldName adminRoles --type ~.domain.AdminRole --notNull false --cardinality MANY_TO_MANY
+finder add --finderName findAdminUsersByPasswordAndUsernameEquals --class ~.domain.AdminUser
+repository jpa --interface ~.repository.AdminRoleRepository --entity ~.domain.AdminRole
+repository jpa --interface ~.repository.AdminUserRepository --entity ~.domain.AdminUser
+controller all --package ~.web
+logging setup --level INFO --package ALL_SPRING
+security setup
+// script --file a.roo
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-06-25 16:21:24
+finder add --finderName findAdminUsersByPasswordAndUsernameEquals --class ~.domain.AdminUser
+finder add --finderName findAdminUsersByPasswordAndUsernameEquals --class ~.repository.AdminUserRepository
+service --interface ~.service.AdminRoleService --entity ~.domain.AdminRole
+service --interface ~.service.AdminUserService --entity ~.domain.AdminUser
+finder add --finderName findAdminUsersByPasswordAndUsernameEquals --class ~.service.AdminUserService
+// [failed] finder list 
+// [failed] finder list --class ~.domain.AdminUser

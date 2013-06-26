@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:show id="ps_cn_fnic_dhc_domain_AdminUser" object="${adminuser}" path="/adminusers" z="jEK9keqrX4BSbup2wnXOjTv7HLI=">
+        <field:display field="username" id="s_cn_fnic_dhc_domain_AdminUser_username" object="${adminuser}" z="uf1GD2z/EZGvMNedg2RZ7T2OtcA="/>
+        <field:display field="email" id="s_cn_fnic_dhc_domain_AdminUser_email" object="${adminuser}" z="r4aLZFSDYpxWX3pzHVVmcITsr3A="/>
+        <field:display field="password" id="s_cn_fnic_dhc_domain_AdminUser_password" object="${adminuser}" z="4XJnido77sbyPHLnvM3tt3huFYA="/>
+        <field:display field="realName" id="s_cn_fnic_dhc_domain_AdminUser_realName" object="${adminuser}" z="3PwYmab6NVQE4qwfSMPZp+7x+Sc="/>
+        <field:display field="officePhone" id="s_cn_fnic_dhc_domain_AdminUser_officePhone" object="${adminuser}" z="IBSv8BEJIcx8ziVWghKnJOL8OxE="/>
+        <field:display field="mobilePhone" id="s_cn_fnic_dhc_domain_AdminUser_mobilePhone" object="${adminuser}" z="xZI/JPOli1lTqYOA1DxCKCnd0ts="/>
+        <field:display date="true" dateTimePattern="${adminUser_createtime_date_format}" field="createTime" id="s_cn_fnic_dhc_domain_AdminUser_createTime" object="${adminuser}" z="a4HdVBmh/OrIasZ/U2jPQ3unE2w="/>
+        <field:display date="true" dateTimePattern="${adminUser_lastlogintime_date_format}" field="lastLoginTime" id="s_cn_fnic_dhc_domain_AdminUser_lastLoginTime" object="${adminuser}" z="JN9pgVbzzbVuAAfNMY35MHQ+8us="/>
+        <field:display field="lastLoginIp" id="s_cn_fnic_dhc_domain_AdminUser_lastLoginIp" object="${adminuser}" z="d9B9uffhxEVUXZD+aSYMIoZ3UAk="/>
+        <field:display field="adminRoles" id="s_cn_fnic_dhc_domain_AdminUser_adminRoles" object="${adminuser}" z="ztFke/G1bfgmExum6OCP7gLHKGs="/>
+    </page:show>
+</div>

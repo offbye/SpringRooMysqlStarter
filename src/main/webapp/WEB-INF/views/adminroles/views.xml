@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN" "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+<tiles-definitions>
+    <definition extends="default" name="adminroles/list">
+        <put-attribute name="body" value="/WEB-INF/views/adminroles/list.jspx"/>
+    </definition>
+<definition extends="default" name="adminroles/show">
+        <put-attribute name="body" value="/WEB-INF/views/adminroles/show.jspx"/>
+    </definition>
+<definition extends="default" name="adminroles/create">
+        <put-attribute name="body" value="/WEB-INF/views/adminroles/create.jspx"/>
+    </definition>
+<definition extends="default" name="adminroles/update">
+        <put-attribute name="body" value="/WEB-INF/views/adminroles/update.jspx"/>
+    </definition>
+</tiles-definitions>

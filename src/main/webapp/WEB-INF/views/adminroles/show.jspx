@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:show id="ps_cn_fnic_dhc_domain_AdminRole" object="${adminrole}" path="/adminroles" z="6NQ8W1qu8GVXmCy54mG6e6hiLnQ=">
+        <field:display field="roleName" id="s_cn_fnic_dhc_domain_AdminRole_roleName" object="${adminrole}" z="BznCeSwpjzDNiNyQuKLy3TAjkOc="/>
+        <field:display field="description" id="s_cn_fnic_dhc_domain_AdminRole_description" object="${adminrole}" z="vVVtHkjm6neCC1N2rb7T0dyEGaQ="/>
+        <field:display field="auth" id="s_cn_fnic_dhc_domain_AdminRole_auth" object="${adminrole}" z="VIm+2CVoWkLbx1cl4xhJSqg8pCQ="/>
+        <field:display date="true" dateTimePattern="${adminRole_createtime_date_format}" field="createTime" id="s_cn_fnic_dhc_domain_AdminRole_createTime" object="${adminrole}" z="vDuO3LcjBpyq2x37fSeXNBcM9zk="/>
+        <field:display field="createdBy" id="s_cn_fnic_dhc_domain_AdminRole_createdBy" object="${adminrole}" z="Hkn4MwnNfHkMXUbkHMKonZRf6/E="/>
+    </page:show>
+</div>
