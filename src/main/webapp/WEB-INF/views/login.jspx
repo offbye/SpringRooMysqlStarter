@@ -2,13 +2,65 @@
   <jsp:directive.page contentType="text/html;charset=UTF-8" />
   <jsp:output omit-xml-declaration="yes" />
   <spring:message code="security_login_title" var="title" htmlEscape="false" />
-  <util:panel id="title" title="${title}">
+  <style>
+  #header{ margin-top:40px;display:block;margin-left:auto;margin-right:auto;width:700px;}
+  .login{
+    width:400px;
+    float:none;
+    background:url(images/login_12.gif) repeat-x;
+    padding:18px 18px 16px 32px;
+    display:block;
+    height: auto;
+    overflow: hidden;
+    margin-top:100px;
+    margin-left:auto;margin-right:auto;border:1px solid #ccc;
+    margin-bottom:250px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    -webkit-box-shadow: 0px 2px 10px rgba(50, 50, 50, 0.75);
+    -moz-box-shadow:    0px 2px 10px rgba(50, 50, 50, 0.75);
+    box-shadow:         0px 2px 10px rgba(50, 50, 50, 0.75);
+}
+
+label{width:100px;font-size:14px; line-height:27px; float:left;}
+#j_username,#j_password,#j_captcha{width:185px; height:25px; float:left; border:1px #999999 solid; padding:0 5px; line-height:25px; background-color:#ffffe1; font-size:14px; color:#666666;}
+#proceed,#reset{
+width:90px; 
+height:30px; 
+margin-left:50px; 
+color: rgb(255, 255, 255);
+font-size: 14px;
+padding: 6px;
+text-shadow: 0px -1px 0px rgba(30, 30, 30, 1);
+-webkit-border-radius: 6px;
+-moz-border-radius: 6px;
+border-radius: 6px;
+background: rgb(166, 255, 0);
+background: -moz-linear-gradient(90deg, rgb(166, 255, 0) 0%, rgb(27, 163, 0) 73%);
+background: -webkit-linear-gradient(90deg, rgb(166, 255, 0) 0%, rgb(27, 163, 0) 73%);
+background: -o-linear-gradient(90deg, rgb(166, 255, 0) 0%, rgb(27, 163, 0) 73%);
+background: -ms-linear-gradient(90deg, rgb(166, 255, 0) 0%, rgb(27, 163, 0) 73%);
+background: linear-gradient(0deg, rgb(166, 255, 0) 0%, rgb(27, 163, 0) 73%);
+-webkit-box-shadow: 0px 2px 10px rgba(50, 50, 50, 0.75);
+-moz-box-shadow:    0px 2px 10px rgba(50, 50, 50, 0.75);
+box-shadow:         0px 2px 10px rgba(50, 50, 50, 0.75);
+
+}
+.text{color:#999999;padding-left:10px;font-size:14px;line-height:27px;}
+
+#captchaImg {width:100px; padding-left:20px; padding-top:0px;margin-top: 0px;}
+#j_captcha {width:60px;padding-top:0px;margin-top:0px;}
+  </style>
+  
+  
+  <div align="center"  class="login">
+    <div class="top"> <span class="left"> <img src="images/login_15.gif" width="152" height="22"  /></span></div>
     <c:if test="${not empty param.login_error}">
       <div class="errors">
         <p>
           <spring:message code="security_login_unsuccessful" />
           <c:out value="${SPRING_SECURITY_LAST_EXCEPTION.message}" />
-          .
         </p>
       </div>
     </c:if>
@@ -47,7 +99,44 @@
         </script>
       </div>
       <br />
-      <div class="submit">
+      <div>
+        <label for="j_captcha">
+          <spring:message code="security_login_form_captcha" />
+        </label>
+        <spring:message code="security_login_form_captcha_message" var="captcha_msg" htmlEscape="false" />
+        <spring:url value="/jcaptcha.jpg" var="jcaptcha_url" />
+        
+        <spring:message code="security_login_form_refresh_captcha" var="refresh_captcha" htmlEscape="false" />
+ 
+        <span style="line-hegiht:30px;" >
+            <input id="j_captcha" type='text' name='j_captcha'/>
+            <img id="captchaImg" src="${jcaptcha_url}" onclick="javascript:refreshCaptcha();" title="${refresh_captcha}"/>
+            
+        </span>
+        <script type="text/javascript">
+          function refreshCaptcha() {
+                var catp = dojo.byId("captchaImg");
+                dojo.fadeOut({ 
+                    node: "captchaImg", 
+                    duration: 1000 
+                }).play();
+                catp.src = '${jcaptcha_url}?' + Math.floor(Math.random() * 100);
+
+                dojo.fadeIn({ 
+                    node: "captchaImg", 
+                    duration: 2000 
+                }).play();
+          }
+        </script>
+      </div>
+      <div style="margin-left:100px;line-hegiht:40px;">
+         <input type="checkbox" name="_spring_security_remember_me" id="_spring_security_remember_me" />
+         <label for="_spring_security_remember_me">
+            <spring:message code="security_login_form_rememberme"/>
+         </label>
+      </div>
+      <br />
+      <div class="submit" align="center">
         <script type="text/javascript">Spring.addDecoration(new Spring.ValidateAllDecoration({elementId:'proceed', event:'onclick'}));</script>
         <spring:message code="button_submit" var="submit_label" htmlEscape="false" />
         <input id="proceed" type="submit" value="${fn:escapeXml(submit_label)}" />
@@ -55,6 +144,6 @@
         <input id="reset" type="reset" value="${fn:escapeXml(reset_label)}" />
       </div>
     </form>
-  </util:panel>
+    </div>
 </div>
 

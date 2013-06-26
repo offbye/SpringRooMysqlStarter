@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:jsp="http://java.sun.com/JSP/Page" 
+xmlns:c="http://java.sun.com/jsp/jstl/core"  
+xmlns:sec="http://www.springframework.org/security/tags"
+xmlns:spring="http://www.springframework.org/tags"
+xmlns:menu="urn:jsptagdir:/WEB-INF/tags/menu" id="menu" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+     <div id="left_content">
+     <div id="user_info">
+     <c:if test="${pageContext['request'].userPrincipal == null}">
+        <A href="javascript:getPath('/login');">请登录</A></c:if>
+     <c:if test="${pageContext['request'].userPrincipal != null}">
+      <span>
+     	 欢迎您，
+      <strong><sec:authentication property="principal.username" /></strong><br/>
+      <spring:url value="/adminusers/myprofile" var="myprofile"/>
+      <a href="${myprofile}"><sec:authentication property="principal.realName" /></a>，
+      <spring:url value="/resources/j_spring_security_logout" var="logout"/>
+      <a href="${logout}">
+        <spring:message code="security_logout"/>
+      </a>
+     </span>
+     </c:if >
+     
+     <script type="text/javascript">
+		<![CDATA[ 
+		         function getPath(url){
+		        	
+		        	var pathName=window.document.location.pathname;
+					var projectName=pathName.substring(0,pathName.substr(1).indexOf('/')+1);
+					window.location.href=projectName+url;
+		         }
+         ]]>
+     </script>
+     </div>
+	    <menu:leftMenu id="left_main_nav" z="nZaf43BjUg1iM0v70HJVEsXDopc=">
+	    <sec:authorize ifAnyGranted="ROLE_ADMIN,ROLE_VIDEO,ROLE_SITE,ROLE_VOC">
+        <menu:leftMenuCategory id="left_c_sysuser" z="user-managed" label="系统管理" onclick="change_Menu('left_c_sysuser','right_sysManager');"/>
+        </sec:authorize>
+        <sec:authorize ifAnyGranted="ROLE_ADMIN,ROLE_VIDEO,ROLE_SITE">
+        <menu:leftMenuCategory id="left_c_content" z="user-managed" label="内容管理" onclick="change_Menu('left_c_content','right_contentManager');"/>
+        </sec:authorize>
+        <sec:authorize ifAnyGranted="ROLE_ADMIN,ROLE_VIDEO,ROLE_SITE">
+        <menu:leftMenuCategory id="left_c_user" z="user-managed" label="用户管理" onclick="change_Menu('left_c_user','right_userManager');"/>
+        </sec:authorize>
+        <sec:authorize ifAnyGranted="ROLE_ADMIN,ROLE_VIDEO,ROLE_SITE">
+        <menu:leftMenuCategory id="left_c_order" z="user-managed" label="订单管理" onclick="change_Menu('left_c_order','right_orderManager');"/>
+        </sec:authorize>
+        <sec:authorize ifAnyGranted="ROLE_ADMIN,ROLE_SITE">
+        <menu:leftMenuCategory id="left_c_templates" z="user-managed" label="网站管理" onclick="change_Menu('left_c_templates','right_templatesManager');"/>
+        </sec:authorize>
+        <sec:authorize ifAnyGranted="ROLE_ADMIN,ROLE_VIDEO,ROLE_SITE">
+        <menu:leftMenuCategory id="left_c_ads" z="user-managed" label="广告管理" onclick="change_Menu('left_c_ads','right_adsManager');"/>
+        <menu:leftMenuCategory id="left_c_statistic" z="user-managed" label="数据 统计 " onclick="change_Menu('left_c_statistic','right_statisticsManager');"/>
+        </sec:authorize>
+        <sec:authorize ifAnyGranted="ROLE_ADMIN,ROLE_VOC">
+        <menu:leftMenuCategory id="left_c_hsy" z="user-managed" label="好声音 " onclick="change_Menu('left_c_hsy','right_hsyManager');"/>
+        </sec:authorize>
+       </menu:leftMenu>
+	<div id="right_main_nav">
+		  <!-- 系统管理 -->
+		   <div id="right_sysManager" style="display:none;">
+			    <menu:leftMenuItem id="i_adminuser_manager" label="管理员管理" url="javascript:changeMenu('i_adminuser_manager')" z="user-managed" />
+				<div id="div_i_adminuser_manager" class="list_detail">
+				    <sec:authorize ifAnyGranted="ROLE_ADMIN">
+					<menu:leftMenuThreeItem id="i_adminuser_new" messageCode="global_menu_new" url="/adminusers?form" z="user-managed"/>
+					<menu:leftMenuThreeItem id="i_adminuser_list" messageCode="global_menu_list" url="/adminusers?page=1&amp;size=${empty param.size ? 10 : param.size}" z="user-managed"/>
+			        </sec:authorize>
+			        <sec:authorize  ifAnyGranted="ROLE_ADMIN,ROLE_VIDEO,ROLE_SITE,ROLE_VOC">
+                    <menu:leftMenuThreeItem id="i_adminuser_myprofile" label="个人资料 " url="/adminusers/myprofile" z="user-managed"/>
+                    <menu:leftMenuThreeItem id="i_adminuser_edit_profile" label="修改个人资料" url="/adminusers/editprofile" z="user-managed"/>
+                    </sec:authorize>
+			    </div>
+			    
+			    <sec:authorize ifAnyGranted="ROLE_ADMIN">          
+			    <menu:leftMenuItem id="i_adminrole_manager" label="角色管理" url="javascript:changeMenu('i_adminrole_manager')" z="user-managed" />
+				<div id="div_i_adminrole_manager" class="list_detail">
+					<menu:leftMenuThreeItem id="i_adminrole_new" messageCode="global_menu_new" url="/adminroles?form" z="user-managed"/>
+					<menu:leftMenuThreeItem id="i_adminrole_list" messageCode="global_menu_list" url="/adminroles?page=1&amp;size=${empty param.size ? 10 : param.size}" z="user-managed"/>
+			    </div>
+			    
+			    <menu:leftMenuItem id="i_adminlog_manager" label="管理日志" url="javascript:changeMenu('i_adminlog_manager')" z="user-managed" />
+			    <div id="div_i_adminlog_manager" class="list_detail">
+                    <menu:item id="i_adminlog_list" messageCode="global_menu_list" url="/adminlogs?page=1&amp;size=${empty param.size ? 10 : param.size}" z="E9MA6ggkRk28hd/MCi3+AXidqmo="/>
+                </div>
+
+                <menu:leftMenuItem id="i_systemconfig_manager" label="系统配置" url="javascript:changeMenu('i_systemconfig_manager')" z="user-managed" />
+			     <div id="div_i_systemconfig_manager" class="list_detail">
+		         	 <menu:leftMenuThreeItem id="i_systemconfig_new" messageCode="global_menu_new" url="/systemconfigs?form" z="Zi6yEP4l3M/OdX54LC4wXBpTGIM="/>
+                     <menu:leftMenuThreeItem id="i_systemconfig_list" messageCode="global_menu_list" url="/systemconfigs?page=1&amp;size=${empty param.size ? 10 : param.size}" z="Hrrhm6Fc6DjEnDt1Kuadt+7II3w="/>
+                 </div>
+                  
+                 <menu:leftMenuItem id="i_message_manager" label="系统通知" url="javascript:changeMenu('i_message_manager')" z="user-managed" />  
+                 <div id="div_i_message_manager" class="list_detail">
+                      <menu:leftMenuThreeItem id="i_message_new" messageCode="global_menu_new" url="/messages?form" z="6ME+t1wCXxIe0ueapV28lZ5YUi0="/>
+                      <menu:leftMenuThreeItem id="i_message_list" messageCode="global_menu_list" url="/messages?page=1&amp;size=${empty param.size ? 10 : param.size}" z="eGv0nXC/JpwInH30nZdjM2e3PxE="/>
+                  </div>
+                 </sec:authorize>
+		    </div>
+		    
+
+		    <!-- 内容管理 -->
+            <sec:authorize ifAnyGranted="ROLE_ADMIN,ROLE_VIDEO,ROLE_SITE">		    
+		    <div id="right_contentManager" style="display:none;">
+		        <sec:authorize ifAnyGranted="ROLE_ADMIN">
+			    <menu:leftMenuItem id="i_category_manager" label="媒体分类管理" url="javascript:changeMenu('i_category_manager')" z="user-managed" />
+				<div id="div_i_category_manager" class="list_detail">
+					<menu:leftMenuThreeItem id="i_category_new" messageCode="global_menu_new" url="/categorys?form" z="user-managed"/>
+					<menu:leftMenuThreeItem id="i_category_list" messageCode="global_menu_list" url="/categorys?page=1&amp;size=${empty param.size ? 10 : param.size}" z="user-managed"/>
+			    </div>
+			    </sec:authorize>
+			    
+			
+			 
+		    </div>
+		    </sec:authorize>
+		    
+		    <!-- 用户管理 -->
+		    <sec:authorize ifAnyGranted="ROLE_ADMIN,ROLE_VIDEO,ROLE_SITE">
+		     <div id="right_userManager" style="display:none;">
+			    <menu:leftMenuItem id="i_user_info_manager" label="用户管理" url="javascript:changeMenu('i_user_info_manager')" z="user-managed" />
+				<div id="div_i_user_info_manager" class="list_detail">
+					<menu:leftMenuThreeItem id="i_ecuser_new" messageCode="global_menu_new" url="/ecusers?form" z="user-managed"/>
+					<menu:leftMenuThreeItem id="i_ecuser_list" messageCode="global_menu_list" url="/ecusers?page=1&amp;size=${empty param.size ? 10 : param.size}" z="user-managed"/>
+					<menu:leftMenuThreeItem id="i_ecuserlog_list" messageCode="global_menu_list" url="/ecuserlogs?page=1&amp;size=${empty param.size ? 10 : param.size}" z="user-managed"/>
+			    </div>
+		
+		    </div>
+		    </sec:authorize>
+		
+		    
+		
+		
+		     <!-- 数据统计 -->
+            <sec:authorize ifAnyGranted="ROLE_ADMIN,ROLE_SITE">
+            <div id="right_statisticsManager" style="display:none;">
+
+                <menu:leftMenuItem id="i_video_statistic_Manager" label="视频统计" url="javascript:changeMenu('i_video_statistic_Manager')"  />
+                <div id="div_i_video_statistic_Manager" class="list_detail">
+                    <menu:leftMenuThreeItem id="i_video_category_statistic_list" label="视频分类 统计" url="/videoads?page=1&amp;size=${empty param.size ? 10 : param.size}" z="user-managed"/>
+                    <menu:leftMenuThreeItem id="i_video_visit_statistic_list" label="视频访问 量 统计" url="/videoads?page=1&amp;size=${empty param.size ? 10 : param.size}" z="user-managed"/>
+                </div>
+                <menu:leftMenuItem id="i_user_statistic_Manager" label="用户 统计" url="javascript:changeMenu('i_user_statistic_Manager')"  />
+                <div id="div_i_user_statistic_Manager" class="list_detail">
+                    <menu:leftMenuThreeItem id="i_user_statistic_list" label="用户 注册统计" url="/stats/userstats" z="user-managed"/>
+               
+                </div>
+        
+            </div>
+            </sec:authorize>
+     
+		    
+		 </div>
+	 </div>
+</div>

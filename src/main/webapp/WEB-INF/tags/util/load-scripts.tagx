@@ -9,6 +9,8 @@
   <spring:url value="/resources/spring/Spring.js" var="spring_url" />
   <spring:url value="/resources/spring/Spring-Dojo.js" var="spring_dojo_url" />
   <spring:url value="/resources/images/favicon.ico" var="favicon" />
+  <spring:url value="/resources/script/common.js" var="common_url" />
+  <spring:url value="/resources/script/leftMenu.js" var="leftMenu_url" />
   <link rel="stylesheet" type="text/css" href="${tundra_url}" />
   <link rel="stylesheet" type="text/css" media="screen" href="${roo_css_url}" />
   <link rel="SHORTCUT ICON" href="${favicon}" />
@@ -16,14 +18,18 @@
   <!-- Get the user local from the page context (it was set by Spring MVC's locale resolver) -->
   <c:set var="userLocale">
     <c:set var="plocale">${pageContext.response.locale}</c:set>
-    <c:out value="${fn:replace(plocale, '_', '-')}" default="en" />
+    <c:out value="${fn:replace(plocale, '_', '-')}" default="zh_CN" />
   </c:set>
+  
+  <spring:message text="http://221.6.207.209/" var="img_host_url" scope="application"/>
 
-  <script type="text/javascript">var djConfig = {parseOnLoad: false, isDebug: false, locale: '${fn:toLowerCase(userLocale)}'};</script>
+  
+  <script type="text/javascript">var djConfig = {parseOnLoad: true, isDebug: true, locale: '${fn:toLowerCase(userLocale)}'};</script>
 
   <script src="${dojo_url}" type="text/javascript"><!-- required for FF3 and Opera --></script>
   <script src="${spring_url}" type="text/javascript"><!-- /required for FF3 and Opera --></script>
   <script src="${spring_dojo_url}" type="text/javascript"><!-- required for FF3 and Opera --></script>
   <script language="JavaScript" type="text/javascript">dojo.require("dojo.parser");</script>
-
+  <script src="${common_url}" type="text/javascript">var _1=0;</script>
+  <script src="${leftMenu_url}" type="text/javascript">dojo.require("dojo.cookie");</script>
 </jsp:root>

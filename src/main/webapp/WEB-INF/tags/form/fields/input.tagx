@@ -55,6 +55,7 @@
       <spring:escapeBody javaScriptEscape="true" >${field}</spring:escapeBody>
     </c:set>
     
+
     <div id="_${fn:escapeXml(id)}_id">
       <label for="_${sec_field}_id">
         <c:out value="${fn:escapeXml(label)}" />
@@ -104,5 +105,11 @@
       </script>
     </div>
     <br />
+  </c:if>
+  <c:if test="${type eq 'hidden'}">
+      <c:set var="sec_field">
+         <spring:escapeBody javaScriptEscape="true" >${field}</spring:escapeBody>
+      </c:set>
+      <input id="_${sec_field}_id" name="${sec_field}" type="${fn:escapeXml(type)}" />
   </c:if>
 </jsp:root>

@@ -9,9 +9,14 @@
   <jsp:directive.attribute name="create" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Include 'create' link into table (default true)" />
   <jsp:directive.attribute name="update" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Include 'update' link into table (default true)" />
   <jsp:directive.attribute name="delete" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Include 'delete' link into table (default true)" />
+  <jsp:directive.attribute name="multiselect" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Include 'checkbox' link into table (default false)" />
+  <jsp:directive.attribute name="trash" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Include 'trash' link into table (default false)" />
+  <jsp:directive.attribute name="untrash" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Include 'untrash' link into table (default false)" />
+  <jsp:directive.attribute name="toggle" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Include 'toggle' link into table (default false)" />  
+  <jsp:directive.attribute name="fastedit" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Include 'fastedit' link into table (default false)" />  
   <jsp:directive.attribute name="render" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Indicate if the contents of this tag and all enclosed tags should be rendered (default 'true')" />
   <jsp:directive.attribute name="z" type="java.lang.String" required="false" description="Used for checking if element has been modified (to recalculate simply provide empty string value)" />
-
+  
   <c:if test="${empty render or render}">
 
     <c:set var="columnProperties" scope="request" />
@@ -19,6 +24,7 @@
     <c:set var="columnMaxLengths" scope="request" />
     <c:set var="columnTypes" scope="request" />
     <c:set var="columnDatePatterns" scope="request" />
+    <c:set var="columnFastEdits" scope="request" />
 
     <jsp:doBody />
 
@@ -34,11 +40,32 @@
       <c:set var="delete" value="true" />
     </c:if>
 
+    <c:if test="${empty multiselect}">
+      <c:set var="multiselect" value="false" />
+    </c:if>
+    
+    <c:if test="${empty trash}">
+      <c:set var="trash" value="false" />
+    </c:if>
+    
+    <c:if test="${empty untrash}">
+      <c:set var="untrash" value="false" />
+    </c:if>
+    
+    <c:if test="${empty toggle}">
+      <c:set var="toggle" value="false" />
+    </c:if>
+    
+    <c:if test="${empty fastedit}">
+      <c:set var="fastedit" value="false" />
+    </c:if>
+    
+    
     <spring:message var="typeName" code="menu_item_${fn:toLowerCase(fn:split(id,'_')[fn:length(fn:split(id,'_')) - 1])}_new_label" htmlEscape="false" />
     <c:set var="lengths" value="${fn:split(columnMaxLengths, '&#9999;')}" scope="request" />
     <c:set var="types" value="${fn:split(columnTypes, '&#9999;')}" scope="request" />
     <c:set var="patterns" value="${fn:split(columnDatePatterns, '&#9999;')}" scope="request" />
-
+    <c:set var="fastedits" value="${fn:split(columnFastEdits, '&#9999;')}" scope="request" />
     <spring:eval var="colCounter" expression="1" />
 
     <table>
@@ -59,6 +86,21 @@
             <th></th>
             <spring:eval var="colCounter" expression="colCounter  + 1" />
           </c:if>
+                    
+          <c:if test="${trash}">
+            <th></th>
+            <spring:eval var="colCounter" expression="colCounter  + 1" />
+          </c:if>
+          
+          <c:if test="${untrash}">
+            <th></th>
+            <spring:eval var="colCounter" expression="colCounter  + 1" />
+          </c:if>
+          
+          <c:if test="${multiselect}">
+            <th><input type="checkbox" name="selectAll" id="selectAll" style="border:0px;padding:0px;margin:0px;" onclick="checkAll(this,'checkbox')"/></th>
+            <spring:eval var="colCounter" expression="colCounter  + 1" />
+          </c:if>
         </tr>
       </thead>
       <c:forEach items="${data}" var="item">
@@ -66,8 +108,10 @@
           <c:forTokens items="${columnProperties}" delims="${'&#9999;'}" var="column" varStatus="num">
             <c:set var="columnMaxLength" value="${lengths[num.count-1]}" />
             <c:set var="columnType" value="${types[num.count-1]}" />
-            <c:set var="columnDatePattern" value="${patterns[num.count-1]}" />
+            <c:set var="columnDatePattern" value="${patterns[num.count-1]}" />        
+            <c:set var="columnFastEdit" value="${fastedits[num.count-1]}" />
             <td>
+              <c:set var="itemId"><spring:eval expression="item[typeIdFieldName]"/></c:set>
               <c:choose>
                 <c:when test="${columnType eq 'date'}">
                   <spring:escapeBody>
@@ -79,6 +123,19 @@
                     <fmt:formatDate value="${item[column].time}" pattern="${fn:escapeXml(columnDatePattern)}" var="colTxt"/>
                   </spring:escapeBody>
                 </c:when>
+                
+                <c:when test="${columnType eq 'object'}">111
+                  <c:set var="objTxt">
+                    <spring:eval expression="item[column]" htmlEscape="false" />
+                  </c:set>
+                  <c:out value="${objTxt}" />
+                </c:when>
+                
+                <c:when test="${columnType eq 'image'}">2222
+                   <spring:url value="/resources/images/yes.gif" var="image_url" />
+                   <img class="image" src="${image_url}" onclick="listTable.selectImage(this, '${column}', '${itemId}')"/>
+                </c:when>
+                
                 <c:otherwise>
                   <c:set var="colTxt">
                     <spring:eval expression="item[column]" htmlEscape="false" />
@@ -88,7 +145,29 @@
               <c:if test="${columnMaxLength ge 0}">
                 <c:set value="${fn:substring(colTxt, 0, columnMaxLength)}" var="colTxt" />
               </c:if>
-              <c:out value="${colTxt}" />
+            
+
+              <c:choose>
+                <c:when test="${colTxt eq 'true'}">
+                   <spring:url value="/resources/images/yes.gif" var="yes_image_url" />
+                   <img class="image" src="${yes_image_url}" onclick="listTable.toggle(this, '${column}', '${itemId}')"/>
+                </c:when>
+                <c:when test="${colTxt eq 'false'}">
+                   <spring:url value="/resources/images/no.gif" var="no_image_url" />
+                   <img class="image" src="${no_image_url}" onclick="listTable.toggle(this, '${column}', '${itemId}')"/>
+                </c:when>
+                <c:otherwise>
+                    <c:choose>
+                     <c:when test="${columnFastEdit eq 'true'}">
+                          <span onclick="listTable.edit(this, '${column}', '${itemId}')" title="click edit it"> <c:out value="${colTxt}" /></span>
+                     </c:when>
+                     <c:otherwise>
+                          <span><c:out value="${colTxt}" /></span>
+                     </c:otherwise>
+                     </c:choose>
+                </c:otherwise>
+              </c:choose>
+              
             </td>
           </c:forTokens>
           <c:set var="itemId"><spring:eval expression="item[typeIdFieldName]"/></c:set>
@@ -133,6 +212,56 @@
               </form:form>
             </td>
           </c:if>
+          
+          <c:if test="${trash}">
+            <td class="utilbox">
+              <spring:url value="${path}/trash/add/${itemId}" var="trash_form_url" />
+              <spring:url value="/resources/images/trash.gif" var="trash_image_url" />
+              <form:form action="${trash_form_url}" method="POST">
+                <spring:message arguments="${typeName}" code="entity_trash" var="trash_label" htmlEscape="false" />
+                <c:set var="trash_confirm_msg">
+                  <spring:escapeBody javaScriptEscape="true">
+                    <spring:message code="entity_trash_confirm" />
+                  </spring:escapeBody>
+                </c:set>
+                <input alt="${fn:escapeXml(trash_label)}" class="image" src="${trash_image_url}" title="${fn:escapeXml(trash_label)}" type="image" value="${fn:escapeXml(trash_label)}" onclick="return confirm('${trash_confirm_msg}');" />
+                <c:if test="${not empty param.page}">
+                  <input name="page" type="hidden" value="1" />
+                </c:if>
+                <c:if test="${not empty param.size}">
+                  <input name="size" type="hidden" value="${fn:escapeXml(param.size)}" />
+                </c:if>
+              </form:form>
+            </td>
+          </c:if>
+          
+          <c:if test="${untrash}">
+            <td class="utilbox">
+              <spring:url value="${path}/trash/restore/${itemId}" var="untrash_form_url" />
+              <spring:url value="/resources/images/trash.gif" var="untrash_image_url" />
+              <form:form action="${untrash_form_url}" method="POST">
+                <spring:message arguments="${typeName}" code="entity_trash" var="untrash_label" htmlEscape="false" />
+                <c:set var="untrash_confirm_msg">
+                  <spring:escapeBody javaScriptEscape="true">
+                    <spring:message code="entity_untrash_confirm" />
+                  </spring:escapeBody>
+                </c:set>
+                <input alt="${fn:escapeXml(untrash_label)}" class="image" src="${untrash_image_url}" title="${fn:escapeXml(untrash_label)}" type="image" value="${fn:escapeXml(untrash_label)}" onclick="return confirm('${untrash_confirm_msg}');" />
+                <c:if test="${not empty param.page}">
+                  <input name="page" type="hidden" value="1" />
+                </c:if>
+                <c:if test="${not empty param.size}">
+                  <input name="size" type="hidden" value="${fn:escapeXml(param.size)}" />
+                </c:if>
+              </form:form>
+            </td>
+          </c:if>
+          
+          <c:if test="${multiselect}">
+            <td class="utilbox">
+                <input type="checkbox" name="checkbox" value="${itemId}"/>
+            </td>
+          </c:if>
         </tr>
       </c:forEach>
       <tr class="footer">
@@ -150,13 +279,177 @@
             </span>
             <c:out value=" " />
           </c:if>
+          
           <c:if test="${not empty maxPages}">
             <util:pagination maxPages="${maxPages}" page="${param.page}" size="${param.size}" />
           </c:if>
         </td>
       </tr>
     </table>
+    
+<c:if test="${multiselect}">
+<script type="text/javascript">
+<![CDATA[ 
+  
+	function checkAll(obj, cName) {
+		var checkboxs = document.getElementsByName(cName);
+		var len = checkboxs.length;
+		for ( var i = 0; i < len; i++) {
+			checkboxs[i].checked = obj.checked;
+		}
+	}
 
+	function getChecked() {
+		var re = "";
+		var checkboxs = document.getElementsByName("checkbox");
+		var len = checkboxs.length;
+		for ( var i = 0; i < len; i++) {
+			if (checkboxs[i].checked) {
+				re += checkboxs[i].value + ",";
+			}
+		}
+		return re.substring(0, re.length - 1);
+	}
+
+	function getCheckedIdArray() {
+		var re = [];
+		var checkboxs = document.getElementsByName("checkbox");
+		var len = checkboxs.length;
+		for ( var i = 0, j = 0; i < len; i++) {
+			if (checkboxs[i].checked) {
+				re[j] = checkboxs[i].value;
+				j++;
+			}
+		}
+		return re;
+	}
+
+	function getAll() {
+		var re = "";
+		var checkboxs = document.getElementsByName("checkbox");
+		var len = checkboxs.length;
+		for ( var i = 0; i < len; i++) {
+			re += checkboxs[i].value + ",";
+		}
+		return re.substring(0, re.length - 1);
+	}
+    ]]>
+</script>
+</c:if>
+
+<spring:url value="${path}/toggle" var="toggle_url" />
+<spring:url value="${path}/fastedit" var="fastedit_url" />
+<script type="text/javascript">
+<![CDATA[ 
+    var listTable = {};
+]]>
+</script>
+
+<c:if test="${toggle}">
+<script type="text/javascript">
+	<![CDATA[ 
+	listTable.toggle = function(obj, act, id) {
+		var val = (obj.src.match(/yes.gif/i)) ? true : false;
+		//obj.src = 'images/loading.gif';
+		dojo.xhrGet({
+			url : '${toggle_url}',
+			preventCache : true,
+			content : {
+				id : id,
+				prop : act,
+				value : !val
+			},
+			load : function(response) {
+				console.log("xhr get success:", response);
+				if (parseInt(response) > 0) {
+					obj.src = !val ? 'images/yes.gif' : 'images/no.gif';
+				}
+			},
+			error : function(error) {
+				console.log("xhr get failed:", error);
+				return error;
+			}
+		});
+	}
+
+    ]]>
+	</script>
+</c:if>
+
+<c:if test="${fastedit}">
+<script type="text/javascript">
+    <![CDATA[ 
+	listTable.edit = function(obj, act, id) {
+		var tag = obj.firstChild.tagName;
+
+		if (typeof (tag) != "undefined" && tag.toLowerCase() == "input") {
+			return;
+		}
+
+		var org = obj.innerHTML;
+		var isIE = window.ActiveXObject ? true : false;
+		var val = isIE ? obj.innerText : obj.textContent;
+
+		var txt = document.createElement("INPUT");
+		txt.value = (val == 'N/A') ? '' : val;
+		txt.style.width = (obj.offsetWidth + 20) + "px";
+
+		obj.innerHTML = "";
+		obj.appendChild(txt);
+		txt.focus();
+
+		txt.onkeypress = function(e) {
+			var evt = (typeof e === "undefined") ? window.event : e;
+			//var obj = Utils.srcElement(e);
+			if (typeof e == "undefined")
+				e = window.event;
+			var obj = document.all ? e.srcElement : e.target;
+
+			if (evt.keyCode == 13) {
+				obj.blur();
+				return false;
+			}
+
+			if (evt.keyCode == 27) {
+				obj.parentNode.innerHTML = org;
+			}
+		}
+
+		txt.onblur = function(e) {
+			if (dojo.string.trim(txt.value).length > 0 && dojo.string.trim(txt.value) != org) {
+
+				dojo.xhrGet({
+					url : '${fastedit_url}',
+					preventCache : true,
+					content : {
+						id : id,
+						prop : act,
+						value : encodeURIComponent(dojo.string.trim(txt.value))
+					},
+					load : function(response) {
+						console.log("xhr get success:", response);
+						if (parseInt(response) > 0) {
+							obj.innerHTML = txt.value;
+						} else {
+							obj.innerHTML = org;
+							alert("not inplement");
+						}
+					},
+					error : function(error) {
+						console.log("xhr get failed:", error);
+						obj.innerHTML = org;
+
+						return error;
+					}
+				});
+
+			} else {
+				obj.innerHTML = org;
+			}
+		}
+	}
+	]]>
+</script>
+</c:if>
   </c:if>
-
 </jsp:root>

@@ -36,4 +36,13 @@ isFullyAuthenticated()	 如果用户不是通过匿名也不是通过remember-me
 	<authentication-manager alias="authenticationManager">
 		<authentication-provider ref="dhcAuthenticationProvider" />
 	</authentication-manager>
+	<!-- Jcaptcha config -->
+    <beans:bean id="captchaService"
+        class="com.octo.captcha.service.image.DefaultManageableImageCaptchaService">
+        <beans:property name="captchaEngine">
+            <beans:bean class="cn.fnic.dhc.jcaptcha.GMailEngine" />
+        </beans:property>
+        <!-- image expired time -->
+        <beans:property name="minGuarantedStorageDelayInSeconds" value="60" />
+    </beans:bean>
 </beans:beans>

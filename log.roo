@@ -36,3 +36,4 @@ service --interface ~.service.AdminUserService --entity ~.domain.AdminUser
 finder add --finderName findAdminUsersByPasswordAndUsernameEquals --class ~.service.AdminUserService
 // [failed] finder list 
 // [failed] finder list --class ~.domain.AdminUser
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2013-06-26 17:23:09
